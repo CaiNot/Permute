@@ -11,11 +11,13 @@ class Solution {
 public:
     vector<vector<int>> permute(vector<int> &nums) {
         sort(nums.begin(), nums.end());
-        if (nums.size() < 2) {
-            this->result.push_back(nums);
-            return this->result;
-        }
-        dfs(nums, -1);
+        betterDfs(nums,0);
+
+//        if (nums.size() < 2) {
+//            this->result.push_back(nums);
+//            return this->result;
+//        }
+//        dfs(nums, -1);
         return this->result;
     }
 
@@ -35,8 +37,18 @@ private:
         }
     }
 
-    void betterDfs(vector<int> nums, int left){
-        
+    void betterDfs(vector<int> nums, int left) {
+        if (nums.size() > left) {
+            for (int i = left; i < nums.size(); i++) {
+                if (nums[i] == nums[left] && i != left)
+                    continue;
+                swap(nums[i], nums[left]);
+                betterDfs(nums, left + 1);
+            }
+        } else {
+//            if (!this->isConflict(this->ans))
+            this->result.push_back(nums);
+        }
     }
 
     bool isConflict(vector<int> &ans) {
@@ -58,7 +70,7 @@ private:
 int main() {
     std::cout << "Hello, World!" << std::endl;
     Solution s;
-    vector<int> nums = {1, 1, 2};
+    vector<int> nums = {1, 1,2, 2};
     vector<vector<int>> re = s.permute(nums);
     for (int i = 0; i < re.size(); i++) {
         for (int j = 0; j < re[i].size(); j++) {
